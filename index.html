@@ -1,0 +1,42 @@
+<html itemscope itemtype="http://schema.org/Product" prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    </head>
+    <body style="margin:0px; overflow:hidden;">
+        <script src="https://meet.jit.si/external_api.js"></script>
+		<iframe src="https://jackbox.tv" id="jackbox0" allowfullscreen="true" style="float:left; height: 50vh; width: 100%; border: 0px;"></iframe>
+        <script>
+            var domain = "meet.jit.si";
+            var options = {
+                roomName: window.location.hash.substring(1) || undefined,
+                parentNode: undefined,
+                configOverwrite: {},
+                interfaceConfigOverwrite: {
+                    VERTICAL_FILMSTRIP: false,
+					MOBILE_APP_PROMO: false,
+					MAXIMUM_ZOOMING_COEFFICIENT: 4,
+                }
+            }
+            var api = new JitsiMeetExternalAPI(domain, options);
+			function resize() {
+				jitsi = document.getElementById("jitsiConferenceFrame0");
+				jitsi.style.float="left";
+				jackbox = document.getElementById("jackbox0");
+				if(window.innerWidth > window.innerHeight) {
+					jitsi.style.width=window.innerWidth/2-1 +"px";
+					jitsi.style.height=window.innerHeight +"px";
+					jackbox.style.width=window.innerWidth/2-1+"px"
+					jackbox.style.height=window.innerHeight +"px";
+				} else {
+					jitsi.style.width=window.innerWidth +"px";
+					jitsi.style.height=window.innerHeight/2-1 +"px";
+					jackbox.style.width=window.innerWidth+"px"
+					jackbox.style.height=window.innerHeight/2-1 +"px";
+				}
+			}
+			window.onresize=resize;
+			resize();
+        </script>
+    </body>
+</html>
