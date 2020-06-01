@@ -1,1 +1,1 @@
-[Jitsi Jackbox](/jitsi_jackbox)
+[Jitsi Jackbox](/jitsi_jackbox.html)
