@@ -1,1 +1,1 @@
-<a href="/jitsi_jackbox">Jitsi Jackbox</a>
+[Jitsi Jackbox](/jitsi_jackbox)
