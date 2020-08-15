@@ -36,7 +36,7 @@ var constraints = {
 			width: 1280,
 			height: 720,
 			frameRate: 30,
-			facingMode: "environment"
+			facingMode: {exact: 'environment'}
 		};
 
 
@@ -78,7 +78,7 @@ document.getElementById('videocontainer').onclick = function() {
 	};
 	
 	document.getElementById('videocontainer').onclick = function(event) {
-		constraints.facingMode = (constraints.facingMode=="user") ? "environment" : "user";
+		constraints.facingMode = (constraints.facingMode=="user") ? {exact: 'environment'} : "user";
 		console.log(constraints);
 	};
 	
