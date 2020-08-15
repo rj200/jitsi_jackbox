@@ -83,7 +83,7 @@ document.getElementById('videocontainer').onclick = function() {
 			
 			devices = devices.filter(dev => (dev.kind == "videoinput"));
 			console.log(devices);
-			deviceNumber = (deviceNumber + 1 %) devices.length;
+			deviceNumber = (deviceNumber + 1 ) % devices.length;
 			constrains.deviceId = devices[deviceNumber
 			
 			console.log(constraints);
