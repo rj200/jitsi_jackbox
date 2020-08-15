@@ -13,51 +13,35 @@
 body {
 	margin: 0;	
 	background-color: black;
+	overflow: hidden;
 }
 </style>
 
-<div id=videocontainer style="width: 100vw; height: 100vh;">
-<div id=settings><button id="btn-stream">Stream</button></div>
+<div id=videocontainer style="width: 100vw; height: 100vh;"></div>
+
 <script>
 var connection
 
-connection = new RTCMultiConnection();
-
-// this line is VERY_important
-connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
-
-// all below lines are optional; however recommended.
-
-connection.session = {
-    audio: false,
-    video: false,
-	data:true
-};
-
-connection.sdpConstraints.mandatory = {
-    OfferToReceiveAudio: true,
-    OfferToReceiveVideo: true
-};
 
 var video;
-connection.onstream = function(event) {
-	video=event.mediaElement;
-	video.muted=true;
-	video.style.width="100%"
-	video.style.height="100%"
-	document.getElementById('videocontainer').appendChild( video );	
-};
+
 
 if(!location.hash) location.hash=Math.random();
 var predefinedRoomId = window.location.hash ;
 
-connection.openOrJoin( predefinedRoomId );
+	
+var constraints = {
+			width: 1280,
+			height: 720,
+			frameRate: 30,
+			facingMode: "user"
+		};
 
 
 
-document.getElementById('btn-stream').onclick = function() {
-	connection.close();
+document.getElementById('videocontainer').onclick = function() {
 	document.getElementById('videocontainer').innerHTML="";
+	//document.getElementById('settings').style.display = "none";
 	connection = new RTCMultiConnection();
 
 	// this line is VERY_important
@@ -69,9 +53,31 @@ document.getElementById('btn-stream').onclick = function() {
 	};
 	
 	connection.session = {
-		audio: true,
+		audio: false,
 		video: true,
-		data:true
+		oneway: true,
+		broadcast: true
+	};
+	
+	connection.applyConstraints({
+		video: constraints
+	});
+	
+	connection.onstream = function(event) {
+		connection.applyConstraints({
+			video: constraints
+		});
+		video=event.mediaElement;
+		video.muted=true;
+		video.style.width="100%"
+		video.style.height="100%"
+		video.controls=false;
+		document.getElementById('videocontainer').appendChild( video );	
+	};
+	
+	document.getElementById('videocontainer').onclick = function(event) {
+		constraints.facingMode = (constraints.facingMode=="user") ? "environment" : "user";
+		console.log(constraints);
 	};
 	
     connection.openOrJoin( predefinedRoomId );

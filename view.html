@@ -13,11 +13,11 @@
 body {
 	margin: 0;	
 	background-color: black;
+	overflow: hidden;
 }
 </style>
 
 <div id=videocontainer style="width: 100vw; height: 100vh;">
-<div id=settings><button id="btn-stream">Stream</button></div>
 <script>
 var connection
 
@@ -31,7 +31,7 @@ connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 connection.session = {
     audio: false,
     video: false,
-	data:true
+	oneway:true
 };
 
 connection.sdpConstraints.mandatory = {
@@ -48,37 +48,12 @@ connection.onstream = function(event) {
 	document.getElementById('videocontainer').appendChild( video );	
 };
 
+connection.onstreamended = function() {  location.refresh(); };
+
 if(!location.hash) location.hash=Math.random();
 var predefinedRoomId = window.location.hash ;
 
 connection.openOrJoin( predefinedRoomId );
-
-
-
-document.getElementById('btn-stream').onclick = function() {
-	connection.close();
-	document.getElementById('videocontainer').innerHTML="";
-	connection = new RTCMultiConnection();
-
-	// this line is VERY_important
-	connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
-	
-	connection.sdpConstraints.mandatory = {
-		OfferToReceiveAudio: false,
-		OfferToReceiveVideo: false
-	};
-	
-	connection.session = {
-		audio: true,
-		video: true,
-		data:true
-	};
-	
-    connection.openOrJoin( predefinedRoomId );
-};
-
-
-
 
 </script>
 </body>
