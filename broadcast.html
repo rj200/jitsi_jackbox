@@ -77,16 +77,17 @@ document.getElementById('videocontainer').onclick = function() {
 		document.getElementById('videocontainer').appendChild( video );	
 	};
 	
-	document.getElementById('videocontainer').onclick = async function(event) {
+	document.getElementById('videocontainer').onclick = function(event) {
 		constraints.facingMode = (constraints.facingMode=="user") ?  'environment' : "user";
-		devices = await navigator.mediaDevices.enumerateDevices();
-		
-		devices = devices.filter(dev => (dev.kind == "videoinput"));
-		console.log(devices);
-		deviceNumber = (deviceNumber + 1 %) devices.length;
-		constrains.deviceId = devices[deviceNumber
-		
-		console.log(constraints);
+		navigator.mediaDevices.enumerateDevices().then(function (devices) {
+			
+			devices = devices.filter(dev => (dev.kind == "videoinput"));
+			console.log(devices);
+			deviceNumber = (deviceNumber + 1 %) devices.length;
+			constrains.deviceId = devices[deviceNumber
+			
+			console.log(constraints);
+		});
 	};
 	
     connection.openOrJoin( predefinedRoomId );
