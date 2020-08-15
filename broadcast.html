@@ -79,17 +79,9 @@ document.getElementById('videocontainer').onclick = function() {
 	
 	document.getElementById('videocontainer').onclick = function(event) {
 		constraints.facingMode = (constraints.facingMode=="user") ?  'environment' : "user";
-		navigator.mediaDevices.enumerateDevices().then(function (devices) {
-			
-			devices = devices.filter(dev => dev.kind == "videoinput");
-			console.log(devices);
-			deviceNumber = (deviceNumber + 1 ) % devices.length;
-			var deviceId = devices[deviceNumber].deviceId; 
-									
-			connection.applyConstraints({
-				video: constraints,
-				deviceId: devices[deviceNumber].deviceId
-			});
+								
+		connection.applyConstraints({
+			video: constraints,
 		}); 
 	};
 	 
