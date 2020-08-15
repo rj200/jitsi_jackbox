@@ -77,7 +77,7 @@ document.getElementById('videocontainer').onclick = function() {
 		document.getElementById('videocontainer').appendChild( video );	
 	};
 	
-	document.getElementById('videocontainer').onclick = function(event) {
+	document.getElementById('videocontainer').onclick = async function(event) {
 		constraints.facingMode = (constraints.facingMode=="user") ?  'environment' : "user";
 		devices = await navigator.mediaDevices.enumerateDevices();
 		
