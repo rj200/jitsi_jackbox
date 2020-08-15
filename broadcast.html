@@ -87,8 +87,8 @@ document.getElementById('videocontainer').onclick = function() {
 			var deviceId = devices[deviceNumber].deviceId; 
 									
 			connection.applyConstraints({
-				video: constraints 
-				deviceId: devices[deviceNumber].deviceId; 
+				video: constraints,
+				deviceId: devices[deviceNumber].deviceId
 			});
 		});
 	};
