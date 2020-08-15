@@ -84,12 +84,12 @@ document.getElementById('videocontainer').onclick = function() {
 			devices = devices.filter(dev => dev.kind == "videoinput");
 			console.log(devices);
 			deviceNumber = (deviceNumber + 1 ) % devices.length;
-			constraints.deviceId = devices[deviceNumber].deviceId; 
+			var deviceId = devices[deviceNumber].deviceId; 
 			
-			console.log(constraints);
-			
+						
 			connection.applyConstraints({
 				video: constraints 
+				deviceId: devices[deviceNumber].deviceId; 
 			});
 		});
 	};
