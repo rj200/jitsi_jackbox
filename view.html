@@ -49,7 +49,7 @@ connection.onstream = function(event) {
 	document.getElementById('videocontainer').appendChild( video );	
 };
 
-connection.onstreamended = function() {  location.refresh(); };
+connection.onstreamended = function() {  location.reload(); };
 
 if(!location.hash) location.hash=Math.random();
 var predefinedRoomId = window.location.hash ;
