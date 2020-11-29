@@ -34,6 +34,8 @@ connection.session = {
     video: false,
 	oneway:true
 };
+	
+connection.autoCloseEntireSession = true;
 
 connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
