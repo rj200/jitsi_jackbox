@@ -56,7 +56,7 @@ connection.onstreamended = function() {  location.reload(); };
 if(!location.hash) location.hash=Math.random();
 var roomid = window.location.hash ;
 
-function reCheckRoomPresence() {
+function checkRoomPresence() {
 	connection.checkPresence(roomid, function(isRoomExist) {
             if (isRoomExist) {
                 connection.join(roomid);
