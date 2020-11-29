@@ -54,10 +54,20 @@ connection.onstream = function(event) {
 connection.onstreamended = function() {  location.reload(); };
 
 if(!location.hash) location.hash=Math.random();
-var predefinedRoomId = window.location.hash ;
+var roomid = window.location.hash ;
 
-connection.openOrJoin( predefinedRoomId );
+function reCheckRoomPresence() {
+	connection.checkPresence(roomid, function(isRoomExist) {
+            if (isRoomExist) {
+                connection.join(roomid);
+                return;
+            }
 
+            setTimeout(checkRoomPresence, 1000);
+        });
+}
+	
+checkRoomPresence()
 </script>
 </body>
 </html>
