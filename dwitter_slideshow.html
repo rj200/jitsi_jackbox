@@ -141,7 +141,7 @@
       async function go() {
         var dweets = await fetch("https://www.dwitter.net/api/dweets/?limit=1000");
         dweets = await dweets.json();
-        dweets = dweets.results.sort(function(a,b) { return a.awesome_count<b.awesome_count })
+        dweets = dweets.results.sort(function(a,b) { return (a.awesome_count<b.awesome_count) ? 1 : -1 })
         var editor = document.querySelector('#editor');
         var code;
         var i=0;
