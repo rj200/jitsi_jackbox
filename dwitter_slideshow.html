@@ -138,12 +138,14 @@
                         '};' +
                         'var x = c.getContext("2d");' +
                         'var startT = +new Date(); ' +
+                        'var frame = 0 ' +
                         'function u(t) {' +
                           code +
                         '};' +
                         'function loop() {' +
                           'requestAnimationFrame(loop);' +
                           'u((new Date() - startT) / 1000);' +
+                          'frame++' +
                         '};' +
                         'loop();' +
                         '</scr' + 'ipt>');
