@@ -109,18 +109,6 @@
       </code>
     </div>
     <script>
-      (function() {        
-        var dweets = await (await fetch("https://www.dwitter.net/api/dweets/?limit=100")).json();
-        var editor = document.querySelector('#editor');
-        var code
-        function next() { 
-          code = json.results[i%100].code
-          editor.value = code;
-          replaceIframe(code)
-        }
-        next();
-        setInterval(next,5000);
-                
         function replaceIframe(code) {
           var iframe = document.createElement('iframe');
           iframe.sandbox = 'allow-scripts';
@@ -164,7 +152,19 @@
           container.innerHTML = '';
           container.appendChild(iframe);
         }
-      })();
+      }
+      
+        var dweets = await fetch("https://www.dwitter.net/api/dweets/?limit=100");
+        dweets = await dweets.json();
+        var editor = document.querySelector('#editor');
+        var code
+        function next() { 
+          code = dweets.results[i%100].code
+          editor.value = code;
+          replaceIframe(code)
+        }
+        next();
+        interval = setInterval(next,5000);
     </script>
   </body>
 </html>
