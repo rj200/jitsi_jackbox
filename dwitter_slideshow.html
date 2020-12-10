@@ -159,9 +159,10 @@
         var dweets = await fetch("https://www.dwitter.net/api/dweets/?limit=100");
         dweets = await dweets.json();
         var editor = document.querySelector('#editor');
-        var code
+        var code;
+        var i=0;
         function next() { 
-          code = dweets.results[i%100].code
+          code = dweets.results[i++%100].code
           editor.value = code;
           replaceIframe(code)
         }
