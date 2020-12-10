@@ -111,29 +111,16 @@
     <script>
       (function() {        
         var dweets = await (await fetch("https://www.dwitter.net/api/dweets/?limit=100")).json();
-        function next() { 
-          replaceIframe(json.results[i%100].code)
-        }
-        setInterval(next,5000);
-        
         var editor = document.querySelector('#editor');
-        var ccd = document.querySelector('#character-count-display');
-        editor.value = atob(code);
-        var oldCode = editor.value;
-        replaceIframe(editor.value);
-        editor.size = Math.max(editor.value.length, 1);
-        ccd.innerText = editor.value.length;
-        editor.addEventListener('keyup', function() {
-          if(editor.value == oldCode) {
-            return;
-          }
-          editor.size = Math.max(editor.value.length, 1);
-          ccd.innerText = editor.value.length;
-          replaceIframe(editor.value);
-          oldCode = editor.value;
-          window.history.replaceState('', '', prefix + btoa(oldCode));
-        });
-
+        var code
+        function next() { 
+          code = json.results[i%100].code
+          editor.value = code;
+          replaceIframe(code)
+        }
+        next();
+        setInterval(next,5000);
+                
         function replaceIframe(code) {
           var iframe = document.createElement('iframe');
           iframe.sandbox = 'allow-scripts';
