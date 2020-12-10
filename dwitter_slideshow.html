@@ -128,12 +128,13 @@
         var code;
         var i=0;
         function next() { 
-          code = dweets[i++%100].code
-          editor.textContent = code
+          code = dweets[i % dweets.length].code
+          editor.textContent =  code + ' // ' dweets[i % dweets.length].link
+          i++;
           replaceIframe(code)
         }
         next();
-        interval = setInterval(next,5000);
+        interval = setInterval(next,20000);
      }
      go();
     </script>
