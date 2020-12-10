@@ -151,14 +151,15 @@
         }
       
       async function go() {
-        var dweets = await fetch("https://www.dwitter.net/api/dweets/?limit=100");
+        var dweets = await fetch("https://www.dwitter.net/api/dweets/?limit=1000");
         dweets = await dweets.json();
+        dweets = dweets.results.sort(function(a,b) { return a.awesome_count<b.awesome_count })
         var editor = document.querySelector('#editor');
         var code;
         var i=0;
         function next() { 
-          code = dweets.results[i++%100].code
-          editor.textContent = 'function u(t) {\n\t' + code + '\n} // 60 times per second';
+          code = dweets[i++%100].code
+          editor.textContent = code
           replaceIframe(code)
         }
         next();
