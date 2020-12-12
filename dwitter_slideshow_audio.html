@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <title>
+      Dwitter Slideshow
+    </title>
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #111;
+        text-align: center;
+      }
+      * {
+        overflow: hidden;
+      }
+      #iframe-container-wrapper {
+        width: 100%;
+        padding: 0 0 56.25% 0; /* 16:9 */
+        position: relative;
+        background: black;
+      }
+
+      #iframe-container {
+          position: absolute;
+          top: 0; bottom: 0; left: 0; right: 0;
+      }
+
+      iframe {
+          width: 100%;
+          height: 100%;
+          border: 0;
+          outline: 0;
+          margin: 0;
+          padding: 0;
+      }
+
+      .share-overlay {
+        text-align: left;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;        
+        opacity: 1;        
+        z-index: 1;
+        color: green;
+        padding: 15px;
+        font-size: 18px;
+        font-family: monospace;
+        font-weight: bold;
+      }
+
+      code {
+        white-space: pre-wrap;
+      }
+
+    </style>
+  </head>
+  <body onclick="openAudio()">
+    
+    <div id="iframe-container-wrapper">
+      <div id="iframe-container"><iframe sandbox="allow-scripts"></iframe></div>
+    </div>
+    <div class="share-overlay">
+      <code id="editor"></code>
+    </div>
+    <script>
+		
+        function replaceIframe(code) {
+          var iframe = document.createElement('iframe');
+          iframe.sandbox = 'allow-scripts';
+          var iframeContent = encodeURIComponent(
+                        '<!DOCTYPE html>' +
+                        '<head>' +
+                        '<style>' +
+                        '* {padding:0;margin:0;border:0;outline:0;overflow:hidden}' +
+                        'canvas {' +
+                          'width: 100%;' +
+                          'background: white;' +
+                        '}' +
+                        '</style>' +
+                        '</head>' +
+                        '<body>' +
+                        '<canvas id=c></canvas>' +
+                        '<script>' +
+                        'var c = document.querySelector("#c");' +
+                        'c.width = 1920;' +
+                        'c.height = 1080;' +
+                        'var S = Math.sin;' +
+                        'var C = Math.cos;' +
+                        'var T = Math.tan;' +
+                        'var R = function(r,g,b,a) {' +
+                          'a = a === undefined ? 1 : a;' +
+                          'return "rgba("+(r|0)+","+(g|0)+","+(b|0)+","+a+")";' +
+                        '};' +
+                        'var x = c.getContext("2d");' +                        
+                        'var frame = 0; ' +
+						'var intensity = 0; ' +
+                        'var time = 0; ' +
+                        'function u(t) {' +
+                          code + ';' +
+                        '};' +
+                        'function loop() {' +                          
+                          'u(time);' +
+						  'frame++;' +
+                        '};' +
+                        'loop();' +
+                        'window.onmessage = function(event) {' +                          						  						  
+                          'intensity = (event.data-0);' +  
+						  'time += intensity*0.002;' +
+						  'loop();' +
+                        '};' +                        
+                        '</scr' + 'ipt>');
+          iframe.src = 'data:text/html;charset=utf-8,' + iframeContent;
+		  iframe.id = 'iframe';
+          var container = document.querySelector('#iframe-container');
+          container.innerHTML = '';
+          container.appendChild(iframe);
+        }
+      
+	  var dweets;
+	  
+	  function next() { 
+		  var editor = document.querySelector('#editor');
+          var code;
+		  var i = Math.floor(Math.random()*dweets.length);
+          code = dweets[i ].code
+          editor.textContent =  dweets[i].link+'\n'+code          
+          replaceIframe(code)
+        }
+	
+      async function go() {
+        dweets = await fetch("https://www.dwitter.net/api/dweets/?limit=1000");
+        dweets = await dweets.json();
+        //dweets = dweets.results.sort(function(a,b) { return (a.awesome_count<b.awesome_count) ? 1 : -1 })
+		dweets = dweets.results.filter(function(a) { return (a.awesome_count>=10) }).filter(function(b) { return b.code.match(/\bt\b/) });
+		console.log(dweets);
+        
+        
+        
+        next();
+        interval = setInterval(next,20000);
+     }
+     go();
+	 
+	  
+	 async function openAudio() {
+		const constraints = {
+			audio: {
+					echoCancellation: false,
+					noiseSuppression: false,
+					autoGainControl: false,					
+				}			
+		};
+		var media = await navigator.mediaDevices.getUserMedia(constraints);
+		var audio = new AudioContext();
+		var analyser = audio.createAnalyser();
+		
+		analyser.fftSize = 1024;				
+		const dataArray = new Float32Array(analyser.fftSize);
+		
+		audio.createMediaStreamSource(media).connect(analyser);
+		
+		var intensity=0;
+		function loop() {
+			requestAnimationFrame(arguments.callee);
+			analyser.getFloatTimeDomainData(dataArray);
+			intensity=0;
+			for(var i =224; i< dataArray.length; i++) {
+				intensity += dataArray[i]*dataArray[i];
+				intensity += (dataArray[i]-dataArray[i-1])*(dataArray[i]-dataArray[i-1]);
+			}
+			intensity = intensity;
+			//document.title = ""+intensity;
+			document.getElementById("iframe").contentWindow.postMessage(intensity, "*");
+		}
+		loop();
+		
+		document.body.onclick=next;
+		
+	}
+	openAudio();
+    </script>
+  
+
+</body></html>
