@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Jitsi Lite</title>
+    <script src="https://meet.jit.si/external_api.js"></script>
+</head>
+<body>
+
+<style>
+body {
+	margin: 0;	
+	background-color: black;
+	overflow: hidden;
+}
+iframe {
+  width: 100vw;
+  height: 100vh
+}
+</style>
+
+<script>
+const domain = 'meet.jit.si';
+var options = {
+    roomName: 'jdhfaksdflkjhASDFSFTHR',    
+    parentNode: document.body
+    configOverwrite: { 
+      preferH264: true, 
+      preferredCodec: 'H264', 
+      disableSimulcast: true,
+      resolution: 180,
+      constraints: {
+         video: {
+             height: {
+                 ideal: 180                 
+             }
+             width: {
+                ideal: 320
+             }
+             
+             framerate: {
+                 ideal: 30
+             }
+         }
+     },
+
+      },
+    interfaceConfigOverwrite: { DISABLE_DOMINANT_SPEAKER_INDICATOR: true },
+};
+var api = new JitsiMeetExternalAPI(domain, options);
+
+</script>
+</body>
+</html>
