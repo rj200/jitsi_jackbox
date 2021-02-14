@@ -13,10 +13,7 @@ body {
 	background-color: black;
 	overflow: hidden;
 }
-iframe {
-  width: 100vw;
-  height: 100vh;
-}
+
 </style>
 
 <script>
@@ -45,7 +42,8 @@ var options = {
    }
 };
 var api = new JitsiMeetExternalAPI(domain, options);
-
+api.getIFrame().style.width='100vw'
+api.getIFrame().style.height='100vh'
 </script>
 </body>
 </html>
